@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details | Vastrika</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="script.js" defer></script>
+
+    <script src="menu.js" defer></script>
+
+    <style>
+
+        /* =====================================
+           SIZE SELECTION
+        ===================================== */
+
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .size-options .size-btn {
+            width: 45px;
+            height: 45px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #782b40;
+            border-radius: 50%;
+
+            background: #ffffff !important;
+            color: #30252b !important;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .size-options .size-btn:hover {
+            background: #f8e8ee !important;
+            color: #30252b !important;
+        }
+
+        /* SELECTED SIZE - PINK AND BLUE */
+
+        .size-options .size-btn.active,
+        .size-options .size-btn.active:hover {
+
+            background: linear-gradient(
+                110deg,
+                #d99ab2,
+                #a8cfe1
+            ) !important;
+
+            color: #30252b !important;
+
+            border: 1px solid #b87994;
+
+            box-shadow:
+                0 3px 10px rgba(185,121,148,.2);
+        }
+
+        /* =====================================
+           JEWELLERY FREE SIZE BUTTON
+        ===================================== */
+
+        .size-options .free-size-btn {
+
+            width: auto;
+            min-width: 115px;
+            height: 43px;
+
+            padding: 10px 20px;
+
+            border-radius: 30px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+        .size-options .free-size-btn.active,
+        .size-options .free-size-btn.active:hover {
+
+            background: linear-gradient(
+                110deg,
+                #d99ab2,
+                #a8cfe1
+            ) !important;
+
+            color: #30252b !important;
+        }
+
+        /* =====================================
+           JEWELLERY QUANTITY SELECTOR
+        ===================================== */
+
+        .product-quantity {
+
+            margin-top: 5px;
+            margin-bottom: 22px;
+        }
+
+        .product-quantity[hidden] {
+
+            display: none !important;
+        }
+
+        .product-quantity h4 {
+
+            font-size: 16px;
+            font-weight: 600;
+            color: #38252b;
+
+            margin-bottom: 12px;
+        }
+
+        .detail-quantity-controls {
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+        }
+
+        .detail-quantity-controls button {
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 37px;
+            height: 37px;
+
+            background: #ffffff;
+            color: #782b40;
+
+            border: 1px solid #d4bdcc;
+            border-radius: 8px;
+
+            font-size: 21px;
+
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .detail-quantity-controls button:hover {
+
+            background: #f0e2e5;
+            border-color: #782b40;
+        }
+
+        .detail-quantity-controls button:disabled {
+
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        #detail-quantity {
+
+            min-width: 28px;
+
+            text-align: center;
+
+            color: #38252b;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* TOTAL PRODUCT PRICE */
+
+        .detail-total-price {
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #756168;
+            font-size: 14px;
+
+            margin-top: 15px;
+        }
+
+        #detail-total {
+
+            color: #782b40;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        /* MOBILE RESPONSIVE */
+
+        @media (max-width: 650px) {
+
+            .size-options .size-btn {
+
+                width: 42px;
+                height: 42px;
+            }
+
+            .size-options .free-size-btn {
+
+                width: auto;
+                min-width: 110px;
+            }
+
+            .detail-quantity-controls button {
+
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <a href="index.html" class="logo">
+            VASTRIKA<span>.</span>
+        </a>
+
+        <nav>
+
+            <a href="index.html">Home</a>
+
+            <a href="collections.html">Collections</a>
+
+            <a href="arrivals.html">New Arrivals</a>
+
+            <a href="bestsellers.html">Best Sellers</a>
+
+            <a href="about.html">About</a>
+
+            <a href="contact.html">Contact</a>
+
+        </nav>
+
+        <a href="cart.html" class="bag">
+
+            Cart (<span class="cart-count">0</span>)
+
+        </a>
+
+    </header>
+
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        <a href="index.html">Home</a> /
+
+        <a href="collections.html">Collections</a> /
+
+        Product Details
+
+    </div>
+
+
+    <!-- PRODUCT DETAILS -->
+
+    <section class="product-details"
+             id="product-details">
+
+
+        <!-- LEFT SIDE PRODUCT IMAGE -->
+
+        <div class="details-image">
+
+            <img id="detail-image"
+                 alt="Product Image">
+
+        </div>
+
+
+        <!-- RIGHT SIDE PRODUCT INFORMATION -->
+
+        <div class="details-content">
+
+            <p class="eyebrow">
+
+                VASTRIKA EXCLUSIVE
+
+            </p>
+
+            <h1 id="detail-name">
+
+                Product Name
+
+            </h1>
+
+            <p class="detail-price"
+               id="detail-price"></p>
+
+            <div class="detail-line"></div>
+
+            <p id="detail-description"></p>
+
+
+            <!-- PRODUCT INFORMATION -->
+
+            <div class="product-quality">
+
+                <h3>Product Information</h3>
+
+                <p>
+                    <strong>Quality:</strong>
+                    Premium Quality
+                </p>
+
+                <p>
+                    <strong>Style:</strong>
+                    Elegant Boutique Collection
+                </p>
+
+                <p>
+                    <strong>Brand:</strong>
+                    Vastrika
+                </p>
+
+                <p>
+                    <strong>Collection:</strong>
+                    Exclusive Fashion
+                </p>
+
+            </div>
+
+
+            <!-- DYNAMIC SIZE SELECTION -->
+
+            <h4>Select Size</h4>
+
+            <div class="size-options"
+                 id="size-options">
+
+                <!-- Sizes are loaded by script.js -->
+
+            </div>
+
+
+            <!-- JEWELLERY QUANTITY -->
+
+            <div class="product-quantity"
+                 id="product-quantity"
+                 hidden>
+
+                <h4>Quantity</h4>
+
+                <div class="detail-quantity-controls">
+
+                    <button type="button"
+                            id="quantity-minus"
+                            aria-label="Decrease quantity">
+
+                        −
+
+                    </button>
+
+                    <span id="detail-quantity">
+
+                        1
+
+                    </span>
+
+                    <button type="button"
+                            id="quantity-plus"
+                            aria-label="Increase quantity">
+
+                        +
+
+                    </button>
+
+                </div>
+
+
+                <!-- TOTAL PRICE -->
+
+                <div class="detail-total-price">
+
+                    <span>Total Price:</span>
+
+                    <strong id="detail-total"></strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT BUTTONS -->
+
+            <div class="detail-actions">
+
+                <button type="button"
+                        class="btn"
+                        id="detail-add">
+
+                    ADD TO CART
+
+                </button>
+
+                <button type="button"
+                        class="wishlist-btn"
+                        id="detail-back">
+
+                    CONTINUE SHOPPING
+
+                </button>
+
+            </div>
+
+
+            <p class="delivery-note">
+
+                ✦ Beautifully selected styles from Vastrika
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <h2>
+
+            VASTRIKA<span>.</span>
+
+        </h2>
+
+        <p>Elegance in Every Thread.</p>
+
+        <p>© 2026 Vastrika. All Rights Reserved.</p>
+
+    </footer>
+
+</body>
+
+</html>

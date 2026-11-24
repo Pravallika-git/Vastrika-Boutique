@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Secure Checkout | Vastrika</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="script.js" defer></script>
+
+    <script src="menu.js" defer></script>
+
+    <style>
+
+        /* =========================================
+           VASTRIKA CHECKOUT
+           ROYAL MAROON AND IVORY THEME
+        ========================================= */
+
+        :root {
+            --checkout-primary: #782b40;
+            --checkout-hover: #591d2e;
+            --checkout-cream: #fff8ed;
+            --checkout-light: #faf0ed;
+            --checkout-soft: #f0dfdf;
+            --checkout-border: #dec5c5;
+            --checkout-dark: #38252b;
+            --checkout-text: #756168;
+        }
+
+        /* =========================================
+           CHECKOUT PAGE
+        ========================================= */
+
+        .checkout-page {
+            background: var(--checkout-cream);
+            min-height: 70vh;
+            padding-bottom: 65px;
+        }
+
+        /* CHECKOUT BANNER */
+
+        .checkout-banner {
+            text-align: center;
+            padding: 50px 16px;
+            background: var(--checkout-soft) !important;
+            background-image: none !important;
+        }
+
+        .checkout-banner h1 {
+            font-family: 'Playfair Display',
+                         Georgia, serif;
+            font-size: 42px;
+            font-weight: 500;
+            color: var(--checkout-primary);
+        }
+
+        .checkout-banner p {
+            color: var(--checkout-text);
+            margin-top: 10px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           CHECKOUT CONTAINER
+        ========================================= */
+
+        .checkout-container {
+            max-width: 1140px;
+            margin: 40px auto 0;
+            padding: 0 18px;
+
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr;
+
+            align-items: start;
+            gap: 25px;
+        }
+
+        .checkout-form,
+        .checkout-summary,
+        .checkout-message {
+            background: #ffffff;
+            border: 1px solid var(--checkout-border);
+            border-radius: 16px;
+            padding: 30px;
+
+            box-shadow:
+                0 6px 30px rgba(65,30,50,.055);
+        }
+
+        .checkout-form h2,
+        .checkout-summary h2 {
+            margin-bottom: 24px;
+
+            font-family: 'Playfair Display',
+                         Georgia, serif;
+
+            font-size: 27px;
+            font-weight: 500;
+            color: var(--checkout-primary);
+        }
+
+        /* =========================================
+           DELIVERY INFORMATION FORM
+        ========================================= */
+
+        .checkout-fields {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 16px;
+        }
+
+        .checkout-field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .checkout-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .checkout-field label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--checkout-dark);
+        }
+
+        .checkout-field input,
+        .checkout-field textarea {
+            width: 100%;
+            padding: 12px 13px;
+
+            border: 1px solid var(--checkout-border);
+            border-radius: 9px;
+
+            background: #ffffff;
+            color: var(--checkout-dark);
+
+            font: inherit;
+            outline: none;
+
+            transition: .2s ease;
+        }
+
+        .checkout-field input::placeholder,
+        .checkout-field textarea::placeholder {
+            color: #96858a;
+        }
+
+        .checkout-field input:focus,
+        .checkout-field textarea:focus {
+            outline: none;
+            border-color: var(--checkout-primary);
+
+            box-shadow:
+                0 0 0 3px rgba(120,43,64,.08);
+        }
+
+        .checkout-field textarea {
+            resize: vertical;
+            min-height: 85px;
+        }
+
+        /* =========================================
+           CASH ON DELIVERY PAYMENT BOX
+        ========================================= */
+
+        .payment-option {
+            margin: 22px 0 17px;
+            padding: 18px;
+
+            border-radius: 12px;
+            border: 1px solid var(--checkout-border);
+
+            background: var(--checkout-light) !important;
+            background-image: none !important;
+        }
+
+        .payment-option strong {
+            display: block;
+            margin-bottom: 7px;
+
+            color: var(--checkout-primary);
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .payment-option p,
+        .checkout-note {
+            color: var(--checkout-text);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           CONFIRM COD ORDER BUTTON
+        ========================================= */
+
+        .checkout-submit {
+            display: block;
+            width: 100%;
+
+            border: 1px solid var(--checkout-primary);
+            border-radius: 30px;
+
+            padding: 15px;
+            margin-top: 18px;
+
+            background: var(--checkout-primary) !important;
+            background-image: none !important;
+
+            color: #ffffff !important;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+            transition: .3s ease;
+        }
+
+        .checkout-submit:hover {
+            background: var(--checkout-hover) !important;
+            border-color: var(--checkout-hover);
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 5px 15px rgba(120,43,64,.15);
+        }
+
+        .checkout-submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #checkout-error {
+            color: #a92e4f;
+            margin-top: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        #checkout-error:empty {
+            display: none;
+        }
+
+        /* =========================================
+           ORDER SUMMARY
+        ========================================= */
+
+        .checkout-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            padding: 14px 0;
+
+            border-bottom:
+                1px solid var(--checkout-border);
+        }
+
+        .checkout-item img {
+            width: 77px;
+            height: 92px;
+            flex-shrink: 0;
+
+            border-radius: 9px;
+
+            background: var(--checkout-light);
+
+            object-fit: contain;
+            object-position: center top;
+        }
+
+        .checkout-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            font-size: 14px;
+            min-width: 0;
+        }
+
+        .checkout-item-info strong {
+            color: var(--checkout-dark);
+            overflow-wrap: anywhere;
+        }
+
+        .checkout-item-info small {
+            color: var(--checkout-text);
+            font-size: 12px;
+        }
+
+        .checkout-item-info span {
+            color: var(--checkout-primary);
+            font-weight: 700;
+        }
+
+        /* ORDER SUBTOTAL */
+
+        .checkout-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 20px;
+            padding-top: 18px;
+
+            border-top:
+                1px solid var(--checkout-border);
+
+            color: var(--checkout-dark);
+
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        #checkout-subtotal {
+            color: var(--checkout-primary);
+        }
+
+        /* BACK TO CART */
+
+        .checkout-back {
+            display: inline-block;
+
+            margin-top: 18px;
+
+            color: var(--checkout-primary);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            text-decoration: underline;
+        }
+
+        .checkout-back:hover {
+            color: var(--checkout-hover);
+        }
+
+        /* =========================================
+           EMPTY CART MESSAGE
+        ========================================= */
+
+        .checkout-message {
+            max-width: 700px;
+            margin: 35px auto 0;
+            text-align: center;
+        }
+
+        .checkout-message h2 {
+            font-family: 'Playfair Display',
+                         Georgia, serif;
+
+            font-size: 30px;
+            font-weight: 500;
+
+            color: var(--checkout-primary);
+
+            margin: 12px 0;
+        }
+
+        .success-description {
+            color: var(--checkout-text);
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 10px 0 18px;
+        }
+
+        .success-description strong {
+            color: var(--checkout-primary);
+        }
+
+        /* =========================================
+           SINGLE SCREEN ORDER CONFIRMATION
+
+           THIS DESIGN APPLIES ONLY AFTER
+           THE ORDER REQUEST HAS BEEN SAVED
+        ========================================= */
+
+        body:has(#checkout-confirmation:not([hidden])) {
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HIDE LARGE SECURE CHECKOUT BANNER */
+
+        body:has(#checkout-confirmation:not([hidden]))
+        .checkout-banner {
+            display: none !important;
+        }
+
+        /* COMPACT NAVIGATION HEADER */
+
+        body:has(#checkout-confirmation:not([hidden]))
+        .header {
+            min-height: 60px;
+
+            padding-top: 8px;
+            padding-bottom: 8px;
+
+            flex-shrink: 0;
+        }
+
+        /* CENTER CONFIRMATION CONTENT */
+
+        body:has(#checkout-confirmation:not([hidden]))
+        .checkout-page {
+            flex: 1;
+
+            min-height: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 16px 20px;
+        }
+
+        /* =========================================
+           COMPACT ORDER CONFIRMATION CARD
+        ========================================= */
+
+        #checkout-confirmation {
+            width: 100%;
+            max-width: 760px;
+
+            margin: 0 auto;
+            padding: 18px 25px;
+
+            background: #ffffff;
+
+            border: 1px solid var(--checkout-border);
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,.04);
+
+            text-align: center;
+        }
+
+        /* SMALL GREEN SUCCESS ICON */
+
+        .success-icon {
+            width: 45px;
+            height: 45px;
+
+            margin: 0 auto 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #eaf7ee;
+            color: #32794c;
+
+            font-size: 29px;
+            font-weight: 700;
+        }
+
+        /* SUCCESS HEADING */
+
+        #checkout-confirmation h2 {
+            font-family: 'Playfair Display',
+                         Georgia, serif;
+
+            font-size: 27px;
+            font-weight: 500;
+
+            color: var(--checkout-primary);
+
+            margin: 6px 0;
+
+            line-height: 1.3;
+        }
+
+        /* CUSTOMER THANK YOU MESSAGE */
+
+        #checkout-confirmation
+        .success-description {
+            color: var(--checkout-text);
+
+            font-size: 13px;
+            line-height: 1.5;
+
+            margin: 5px 0 10px;
+        }
+
+        /* =========================================
+           ORDER REQUEST SAVED MESSAGE
+        ========================================= */
+
+        .order-status {
+            padding: 9px 12px;
+            margin: 10px 0;
+
+            border: 1px solid #c2e5ce;
+            border-radius: 8px;
+
+            background: #edf9f1;
+            color: #32794c;
+
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* =========================================
+           COMPACT ORDER INFORMATION
+        ========================================= */
+
+        .order-information {
+            margin: 10px 0;
+            padding: 7px 16px;
+
+            border-radius: 10px;
+
+            border: 1px solid var(--checkout-border);
+
+            background: #fcf8f5;
+
+            text-align: left;
+        }
+
+        .order-information p {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            flex-wrap: wrap;
+            gap: 8px;
+
+            margin: 0;
+
+            padding: 8px 0;
+
+            border-bottom: 1px solid #eadcda;
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .order-information p:last-child {
+            border-bottom: none;
+        }
+
+        .order-information span {
+            color: var(--checkout-text);
+        }
+
+        .order-information strong {
+            color: var(--checkout-dark);
+            overflow-wrap: anywhere;
+        }
+
+        #order-reference,
+        #order-total {
+            color: var(--checkout-primary);
+        }
+
+        /* =========================================
+           SHORT ORDER CONFIRMATION NOTICE
+        ========================================= */
+
+        .booking-disclaimer {
+            text-align: left;
+
+            padding: 10px 14px;
+            margin: 10px 0;
+
+            background: #fff8ed;
+
+            border: 1px solid #e8d6bd;
+            border-radius: 9px;
+
+            color: #6f5f50;
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .booking-disclaimer strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #72563e;
+
+            font-size: 12px;
+        }
+
+        /* =========================================
+           EMAIL AND COPY ORDER BUTTONS
+        ========================================= */
+
+        .checkout-actions {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-wrap: wrap;
+            gap: 10px;
+
+            margin: 12px 0;
+        }
+
+        .checkout-actions a,
+        .checkout-actions button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--checkout-primary);
+            border-radius: 30px;
+
+            padding: 10px 18px;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            font-family: 'DM Sans',
+                         Arial, sans-serif;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            background: var(--checkout-primary) !important;
+            background-image: none !important;
+
+            color: #ffffff !important;
+
+            transition: .2s ease;
+        }
+
+        .checkout-actions a:hover,
+        .checkout-actions button:hover {
+            background: var(--checkout-hover) !important;
+
+            border-color: var(--checkout-hover);
+
+            transform: translateY(-1px);
+        }
+
+        /* =========================================
+           COPY SUCCESS MESSAGE
+        ========================================= */
+
+        #copy-message {
+            color: #32794c;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+
+        /* REMOVE EMPTY SPACE */
+
+        #copy-message:empty {
+            display: none;
+        }
+
+        /* =========================================
+           VIEW ORDER DETAILS
+        ========================================= */
+
+        .order-details {
+            margin: 8px 0;
+            text-align: center;
+        }
+
+        .order-details summary {
+            color: var(--checkout-primary);
+
+            font-size: 12px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .order-details summary:hover {
+            color: var(--checkout-hover);
+        }
+
+        .order-details label {
+            display: block;
+
+            margin-top: 10px;
+
+            text-align: left;
+
+            color: var(--checkout-text);
+
+            font-size: 12px;
+        }
+
+        /* ORDER DETAILS TEXTAREA */
+
+        #order-text {
+            width: 100%;
+
+            height: 100px;
+            min-height: 80px;
+
+            margin: 8px 0;
+            padding: 10px;
+
+            border: 1px solid var(--checkout-border);
+            border-radius: 8px;
+
+            background: #fffcf8;
+            color: var(--checkout-dark);
+
+            font: 12px/1.5 monospace;
+
+            resize: vertical;
+            outline: none;
+        }
+
+        #order-text:focus {
+            border-color: var(--checkout-primary);
+        }
+
+        /* =========================================
+           CONTINUE SHOPPING BUTTON
+        ========================================= */
+
+        .continue-shopping {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 10px;
+
+            padding: 12px 25px;
+
+            border: 1px solid var(--checkout-primary);
+            border-radius: 30px;
+
+            background: var(--checkout-primary) !important;
+            background-image: none !important;
+
+            color: #ffffff !important;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: .2s ease;
+        }
+
+        #checkout-confirmation
+        .continue-shopping {
+            margin-top: 5px;
+
+            padding: 10px 24px;
+
+            font-size: 11px;
+        }
+
+        .continue-shopping:hover {
+            background: var(--checkout-hover) !important;
+            border-color: var(--checkout-hover);
+
+            color: #ffffff !important;
+
+            transform: translateY(-1px);
+        }
+
+        /* =========================================
+           COMPACT FOOTER
+           ONLY FOR ORDER CONFIRMATION
+        ========================================= */
+
+        body:has(#checkout-confirmation:not([hidden]))
+        .footer {
+            padding: 10px 15px;
+
+            flex-shrink: 0;
+        }
+
+        body:has(#checkout-confirmation:not([hidden]))
+        .footer h2 {
+            font-size: 19px;
+            margin-bottom: 3px;
+        }
+
+        body:has(#checkout-confirmation:not([hidden]))
+        .footer p {
+            font-size: 10px;
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+
+        /* =========================================
+           KEYBOARD ACCESSIBILITY
+        ========================================= */
+
+        .checkout-submit:focus-visible,
+        .checkout-actions a:focus-visible,
+        .checkout-actions button:focus-visible,
+        .continue-shopping:focus-visible,
+        .checkout-back:focus-visible,
+        .order-details summary:focus-visible {
+            outline: 2px solid var(--checkout-primary);
+            outline-offset: 4px;
+        }
+
+        /* HIDE UNUSED SECTIONS */
+
+        [hidden] {
+            display: none !important;
+        }
+
+        /* =========================================
+           TABLET RESPONSIVE DESIGN
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-message {
+                margin-left: 18px;
+                margin-right: 18px;
+            }
+
+            #checkout-confirmation {
+                margin: 0 auto;
+            }
+        }
+
+        /* =========================================
+           MOBILE RESPONSIVE DESIGN
+        ========================================= */
+
+        @media (max-width: 520px) {
+
+            .checkout-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-form,
+            .checkout-summary,
+            .checkout-message {
+                padding: 21px;
+            }
+
+            .checkout-banner {
+                padding: 35px 16px;
+            }
+
+            .checkout-banner h1 {
+                font-size: 33px;
+            }
+
+            .checkout-form h2,
+            .checkout-summary h2 {
+                font-size: 24px;
+            }
+
+            .checkout-container {
+                margin-top: 25px;
+                padding: 0 15px;
+            }
+
+            .checkout-submit {
+                font-size: 12px;
+            }
+
+            /* MOBILE CONFIRMATION PAGE */
+
+            body:has(#checkout-confirmation:not([hidden]))
+            .checkout-page {
+                padding: 12px;
+            }
+
+            #checkout-confirmation {
+                padding: 15px;
+            }
+
+            #checkout-confirmation h2 {
+                font-size: 23px;
+            }
+
+            .success-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 26px;
+            }
+
+            .order-information {
+                padding: 7px 10px;
+            }
+
+            .order-information p {
+                font-size: 11px;
+                padding: 7px 0;
+            }
+
+            .checkout-actions {
+                gap: 8px;
+            }
+
+            .checkout-actions a,
+            .checkout-actions button {
+                padding: 10px 12px;
+                font-size: 10px;
+            }
+
+            .booking-disclaimer {
+                font-size: 11px;
+            }
+
+            .continue-shopping {
+                font-size: 12px;
+            }
+        }
+
+        /* =========================================
+           SMALL HEIGHT DESKTOP SCREENS
+        ========================================= */
+
+        @media (min-width: 801px)
+               and (max-height: 750px) {
+
+            body:has(#checkout-confirmation:not([hidden]))
+            .checkout-page {
+                padding: 8px 15px;
+            }
+
+            #checkout-confirmation {
+                padding: 12px 22px;
+            }
+
+            #checkout-confirmation h2 {
+                font-size: 24px;
+            }
+
+            .success-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 25px;
+                margin-bottom: 5px;
+            }
+
+            .order-status {
+                margin: 7px 0;
+                padding: 7px 10px;
+            }
+
+            .order-information {
+                margin: 7px 0;
+            }
+
+            .order-information p {
+                padding: 6px 0;
+            }
+
+            .booking-disclaimer {
+                padding: 8px 12px;
+                margin: 7px 0;
+            }
+
+            .checkout-actions {
+                margin: 8px 0;
+            }
+
+            .order-details {
+                margin: 6px 0;
+            }
+
+            body:has(#checkout-confirmation:not([hidden]))
+            .footer {
+                padding: 8px 15px;
+            }
+        }
+
+        /* =========================================
+           REDUCED MOTION
+        ========================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .checkout-submit,
+            .checkout-actions a,
+            .checkout-actions button,
+            .continue-shopping {
+                transition: none;
+                transform: none !important;
+            }
+        }
+
+        /* =========================================
+           END OF CHECKOUT CSS
+        ========================================= */
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- =========================================
+         NAVIGATION BAR
+    ========================================= -->
+
+    <header class="header">
+
+        <a href="index.html" class="logo">
+            VASTRIKA<span>.</span>
+        </a>
+
+        <nav>
+
+            <a href="index.html">Home</a>
+
+            <a href="collections.html">Collections</a>
+
+            <a href="arrivals.html">New Arrivals</a>
+
+            <a href="bestsellers.html">Best Sellers</a>
+
+            <a href="about.html">About</a>
+
+            <a href="contact.html">Contact</a>
+
+        </nav>
+
+        <a href="cart.html" class="bag">
+
+            Cart (<span class="cart-count">0</span>)
+
+        </a>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN CHECKOUT PAGE
+    ========================================= -->
+
+    <main class="checkout-page">
+
+
+        <!-- CHECKOUT BANNER -->
+
+        <section class="checkout-banner">
+
+            <h1>Secure Checkout</h1>
+
+            <p>
+                Complete your shopping experience
+                with love and elegance.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================
+             EMPTY CART MESSAGE
+        ===================================== -->
+
+        <section id="checkout-empty"
+                 class="checkout-message"
+                 hidden>
+
+            <h2>Your Cart Is Empty</h2>
+
+            <p class="success-description">
+
+                Your next beautiful find is
+                just a click away!
+
+            </p>
+
+            <a href="collections.html"
+               class="continue-shopping">
+
+                EXPLORE COLLECTIONS
+
+            </a>
+
+        </section>
+
+
+        <!-- =====================================
+             CHECKOUT FORM AND ORDER SUMMARY
+        ===================================== -->
+
+        <div id="checkout-layout"
+             class="checkout-container"
+             hidden>
+
+
+            <!-- DELIVERY INFORMATION -->
+
+            <form id="checkout-form"
+                  class="checkout-form">
+
+                <h2>Delivery Information</h2>
+
+                <div class="checkout-fields">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="checkout-field full">
+
+                        <label for="cod-name">
+
+                            Full Name *
+
+                        </label>
+
+                        <input
+                            id="cod-name"
+                            name="name"
+                            type="text"
+                            maxlength="100"
+                            autocomplete="name"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- MOBILE NUMBER -->
+
+                    <div class="checkout-field">
+
+                        <label for="cod-phone">
+
+                            Mobile Number *
+
+                        </label>
+
+                        <input
+                            id="cod-phone"
+                            name="phone"
+                            type="tel"
+                            inputmode="numeric"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            autocomplete="tel-national"
+                            placeholder="Enter 10-digit number"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL ADDRESS -->
+
+                    <div class="checkout-field">
+
+                        <label for="cod-email">
+
+                            Email Address (optional)
+
+                        </label>
+
+                        <input
+                            id="cod-email"
+                            name="email"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="Enter your email"
+                        >
+
+                    </div>
+
+
+                    <!-- COMPLETE ADDRESS -->
+
+                    <div class="checkout-field full">
+
+                        <label for="cod-address">
+
+                            Complete Address *
+
+                        </label>
+
+                        <textarea
+                            id="cod-address"
+                            name="address"
+                            rows="3"
+                            maxlength="400"
+                            autocomplete="street-address"
+                            placeholder="House number, street, area"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- LANDMARK -->
+
+                    <div class="checkout-field full">
+
+                        <label for="cod-landmark">
+
+                            Landmark (optional)
+
+                        </label>
+
+                        <input
+                            id="cod-landmark"
+                            name="landmark"
+                            type="text"
+                            maxlength="100"
+                            placeholder="Enter nearby landmark"
+                        >
+
+                    </div>
+
+
+                    <!-- CITY -->
+
+                    <div class="checkout-field">
+
+                        <label for="cod-city">
+
+                            City *
+
+                        </label>
+
+                        <input
+                            id="cod-city"
+                            name="city"
+                            type="text"
+                            maxlength="100"
+                            autocomplete="address-level2"
+                            placeholder="Enter your city"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- STATE -->
+
+                    <div class="checkout-field">
+
+                        <label for="cod-state">
+
+                            State *
+
+                        </label>
+
+                        <input
+                            id="cod-state"
+                            name="state"
+                            type="text"
+                            maxlength="100"
+                            autocomplete="address-level1"
+                            placeholder="Enter your state"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PIN CODE -->
+
+                    <div class="checkout-field full">
+
+                        <label for="cod-pincode">
+
+                            PIN Code *
+
+                        </label>
+
+                        <input
+                            id="cod-pincode"
+                            name="pincode"
+                            type="text"
+                            inputmode="numeric"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            autocomplete="postal-code"
+                            placeholder="Enter 6-digit PIN code"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     CASH ON DELIVERY PAYMENT
+                ================================= -->
+
+                <div class="payment-option">
+
+                    <strong>
+
+                        ◉ Cash on Delivery (COD)
+
+                    </strong>
+
+                    <p>
+
+                        Enjoy a convenient shopping
+                        experience with Vastrika.
+
+                        Pay when your order is delivered.
+
+                        Delivery charges, if applicable,
+                        will be confirmed separately.
+
+                    </p>
+
+                </div>
+
+
+                <!-- CHECKOUT NOTICE -->
+
+                <p class="checkout-note">
+
+                    Your order request will be saved
+                    in this browser. After checkout,
+                    share your order details with
+                    Vastrika for final confirmation.
+
+                </p>
+
+
+                <!-- CONFIRM ORDER BUTTON -->
+
+                <button type="submit"
+                        class="checkout-submit">
+
+                    CONFIRM COD ORDER REQUEST
+
+                </button>
+
+
+                <!-- ERROR MESSAGE -->
+
+                <p id="checkout-error"
+                   role="alert"></p>
+
+            </form>
+
+
+            <!-- =====================================
+                 ORDER SUMMARY
+            ===================================== -->
+
+            <aside class="checkout-summary">
+
+                <h2>Order Summary</h2>
+
+                <div id="checkout-items"></div>
+
+
+                <!-- SUBTOTAL -->
+
+                <div class="checkout-total">
+
+                    <span>Subtotal</span>
+
+                    <span id="checkout-subtotal">
+
+                        ₹0
+
+                    </span>
+
+                </div>
+
+
+                <p class="checkout-note"
+                   style="margin-top: 15px;">
+
+                    Delivery charges are not included
+                    in the subtotal.
+
+                </p>
+
+
+                <!-- BACK TO CART -->
+
+                <a class="checkout-back"
+                   href="cart.html">
+
+                    ← Back to Cart
+
+                </a>
+
+            </aside>
+
+        </div>
+
+
+        <!-- =========================================
+             COMPACT SINGLE SCREEN
+             ORDER SUCCESS CONFIRMATION
+        ========================================= -->
+
+        <section id="checkout-confirmation"
+                 class="checkout-message"
+                 hidden>
+
+
+            <!-- SMALL SUCCESS ICON -->
+
+            <div class="success-icon">
+
+                ✓
+
+            </div>
+
+
+            <!-- SUCCESS HEADING -->
+
+            <h2>
+
+                Your Order Request Is Saved!
+
+            </h2>
+
+
+            <!-- CUSTOMER NAME -->
+
+            <p class="success-description">
+
+                Thank you for shopping with Vastrika,
+
+                <strong id="order-customer"></strong>!
+
+            </p>
+
+
+            <!-- ORDER SAVED MESSAGE -->
+
+            <div class="order-status"
+                 role="status">
+
+                ✓ Your Cash on Delivery order request
+                has been saved successfully!
+
+            </div>
+
+
+            <!-- =====================================
+                 COMPACT ORDER INFORMATION
+            ===================================== -->
+
+            <div class="order-information">
+
+
+                <!-- ORDER REFERENCE -->
+
+                <p class="reference">
+
+                    <span>Order Reference</span>
+
+                    <strong id="order-reference">
+
+                    </strong>
+
+                </p>
+
+
+                <!-- ORDER TOTAL -->
+
+                <p>
+
+                    <span>
+
+                        Order Total (excluding delivery)
+
+                    </span>
+
+                    <strong id="order-total">
+
+                    </strong>
+
+                </p>
+
+
+                <!-- PAYMENT METHOD -->
+
+                <p>
+
+                    <span>Payment Method</span>
+
+                    <strong>
+
+                        Cash on Delivery
+
+                    </strong>
+
+                </p>
+
+
+                <!-- PAYMENT STATUS -->
+
+                <p>
+
+                    <span>Payment Status</span>
+
+                    <strong>
+
+                        Pay on Delivery
+
+                    </strong>
+
+                </p>
+
+
+                <!-- ORDER STATUS -->
+
+                <p>
+
+                    <span>Order Status</span>
+
+                    <strong>
+
+                        Awaiting Confirmation
+
+                    </strong>
+
+                </p>
+
+            </div>
+
+
+            <!-- =====================================
+                 SHORT FINAL CONFIRMATION NOTICE
+            ===================================== -->
+
+            <div class="booking-disclaimer">
+
+                <strong>
+
+                    One Final Step to Confirm Your Order
+
+                </strong>
+
+                Your order request is saved in this
+                browser. Please share your order details
+                with Vastrika for final order and
+                delivery confirmation.
+
+            </div>
+
+
+            <!-- =====================================
+                 EMAIL AND COPY BUTTONS
+            ===================================== -->
+
+            <div class="checkout-actions">
+
+
+                <!-- EMAIL ORDER DETAILS -->
+
+                <a id="send-order-email"
+                   href="#">
+
+                    EMAIL ORDER DETAILS
+
+                </a>
+
+
+                <!-- COPY ORDER DETAILS -->
+
+                <button type="button"
+                        id="copy-order-btn">
+
+                    COPY ORDER DETAILS
+
+                </button>
+
+            </div>
+
+
+            <!-- COPY MESSAGE -->
+
+            <p id="copy-message"
+               role="status"></p>
+
+
+            <!-- =====================================
+                 VIEW ORDER DETAILS
+            ===================================== -->
+
+            <details class="order-details">
+
+                <summary>
+
+                    View Your Order Details
+
+                </summary>
+
+                <label for="order-text">
+
+                    Order information:
+
+                </label>
+
+                <textarea id="order-text"
+                          readonly></textarea>
+
+            </details>
+
+
+            <!-- =====================================
+                 CONTINUE SHOPPING
+            ===================================== -->
+
+            <a href="index.html"
+               class="continue-shopping">
+
+                CONTINUE SHOPPING
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <footer class="footer">
+
+        <h2>
+
+            VASTRIKA<span>.</span>
+
+        </h2>
+
+        <p>
+
+            Elegance in Every Thread.
+
+        </p>
+
+        <p>
+
+            © 2026 Vastrika. All Rights Reserved.
+
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
